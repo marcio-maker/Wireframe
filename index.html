@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portfólio Interativo - Master UI</title>
+    <title>Portfólio Imersivo - Master UI</title>
     <style>
         /* RESET E CONFIGURAÇÕES BASE */
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
@@ -30,31 +30,42 @@
         #hide-lang { display: none; }
         #hide-lang:checked ~ #lang-screen { display: none; }
 
-        /* --- 3. SISTEMA DE MODAL (CSS ONLY) --- */
+        /* --- 3. SISTEMA DE MODAL FULLSCREEN COM BLUR --- */
         .modal {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.8); display: none;
-            justify-content: center; align-items: center; z-index: 8000; padding: 20px;
+            background: rgba(255, 255, 255, 0.1); 
+            backdrop-filter: blur(15px); /* Efeito de desfoque no fundo */
+            -webkit-backdrop-filter: blur(15px);
+            display: none; justify-content: center; align-items: center; 
+            z-index: 8000; padding: 20px;
         }
         .modal-content {
-            background: #fff; padding: 40px; border-radius: 24px; max-width: 600px;
-            width: 100%; position: relative; border: 2px solid #000;
+            background: #fff; padding: 50px; border-radius: 32px; 
+            width: 95%; height: 90%; /* Quase tela cheia */
+            max-width: 1100px; position: relative; border: 3px solid #000;
+            overflow-y: auto; display: flex; flex-direction: column;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
         }
-        .close-modal { position: absolute; top: 20px; right: 20px; cursor: pointer; font-weight: bold; }
+        .close-modal { 
+            position: absolute; top: 30px; right: 30px; cursor: pointer; 
+            font-size: 24px; font-weight: 900; background: #000; 
+            color: #fff; width: 40px; height: 40px; display: flex; 
+            align-items: center; justify-content: center; border-radius: 50%;
+        }
         
-        /* Gatilhos dos Modais */
+        /* Controle de Exibição */
+        .modal-check { display: none; }
         #m1:checked ~ .modal-1, #m2:checked ~ .modal-2, #m3:checked ~ .modal-3, 
         #m4:checked ~ .modal-4, #m5:checked ~ .modal-5, #m6:checked ~ .modal-6,
         #m7:checked ~ .modal-7, #m8:checked ~ .modal-8 { display: flex; }
-        .modal-check { display: none; }
 
-        /* --- 4. CONTEÚDO PRINCIPAL (GRID) --- */
+        /* --- 4. CONTEÚDO PRINCIPAL --- */
         .main-container { max-width: 1200px; margin: 0 auto; padding: 15px; display: flex; flex-direction: column; gap: 15px; }
-        .ui-card, header, footer { border: 2px solid #000; border-radius: 24px; padding: 20px; background: #fff; display: flex; flex-direction: column; }
+        .ui-card, header, footer { border: 2px solid #000; border-radius: 24px; padding: 25px; background: #fff; display: flex; flex-direction: column; transition: 0.3s; }
         .main-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 15px; }
 
         header { grid-column: span 12; flex-direction: row !important; justify-content: space-between; align-items: center; }
-        .hero { grid-column: span 8; min-height: 250px; }
+        .hero { grid-column: span 8; min-height: 280px; }
         .stories { grid-column: span 4; flex-direction: row; gap: 10px; align-items: center; justify-content: space-around; }
         .select { grid-column: span 3; }
         .list { grid-column: span 5; }
@@ -64,17 +75,19 @@
         .social { grid-column: span 3; text-align: center; }
         footer { grid-column: span 12; flex-direction: row !important; justify-content: space-between; align-items: center; }
 
-        /* BOTÕES */
-        .btn-open { margin-top: auto; padding: 8px; border: 1px solid #000; border-radius: 8px; cursor: pointer; font-size: 10px; text-align: center; font-weight: bold; transition: 0.3s; }
+        /* COMPONENTES VISUAIS */
+        .btn-open { margin-top: 20px; padding: 12px; border: 2px solid #000; border-radius: 14px; cursor: pointer; font-size: 11px; text-align: center; font-weight: bold; text-transform: uppercase; }
         .btn-open:hover { background: #000; color: #fff; }
-        .btn-main { padding: 12px 25px; background: #000; color: #fff; border-radius: 12px; cursor: pointer; font-weight: bold; border: none; text-align: center; }
-        
-        /* DECORAÇÃO */
-        .tag { font-size: 10px; font-weight: 800; color: #888; margin-bottom: 5px; text-transform: uppercase; }
-        .circle { width: 40px; height: 40px; border: 2px solid #000; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: bold; }
-        .box { border: 2px dashed #000; border-radius: 15px; height: 60px; margin-bottom: 10px; background: #f9f9f9; }
+        .btn-main { padding: 15px 30px; background: #000; color: #fff; border-radius: 12px; cursor: pointer; font-weight: bold; border: none; }
+        .tag { font-size: 11px; font-weight: 900; color: #000; margin-bottom: 8px; text-transform: uppercase; opacity: 0.4; }
+        .circle { width: 50px; height: 50px; border: 2px solid #000; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; }
+        .box { border: 2px dashed #000; border-radius: 20px; height: 100px; margin-bottom: 15px; background: #f0f0f0; }
 
-        @media (max-width: 900px) { .main-grid { display: flex; flex-direction: column; } .hero, .stories, .select, .list, .form, .article, .actions, .social { grid-column: span 12; } }
+        /* RESPONSIVIDADE */
+        @media (max-width: 900px) { 
+            .main-grid { display: flex; flex-direction: column; } 
+            .modal-content { height: 95%; padding: 30px; }
+        }
     </style>
 </head>
 <body>
@@ -86,77 +99,71 @@
     <input type="checkbox" id="m5" class="modal-check"> <input type="checkbox" id="m6" class="modal-check">
     <input type="checkbox" id="m7" class="modal-check"> <input type="checkbox" id="m8" class="modal-check">
 
-    <div id="loading-screen">
-        <div class="spinner"></div>
-        <label for="hide-loading" class="btn-main">ENTRAR NO PORTFÓLIO</label>
-    </div>
+    <div id="loading-screen"><div class="spinner"></div><label for="hide-loading" class="btn-main">ACESSAR PORTFÓLIO</label></div>
+    <div id="lang-screen"><h2>BEM-VINDO / WELCOME</h2><br><label for="hide-lang" class="btn-main">PORTUGUÊS / ENGLISH</label></div>
 
-    <div id="lang-screen">
-        <h2 style="margin-bottom: 20px;">LANGUAGE / IDIOMA</h2>
-        <label for="hide-lang" class="btn-main">PORTUGUÊS / ENGLISH</label>
-    </div>
-
-    <div class="modal modal-1"><div class="modal-content"><label for="m1" class="close-modal">✕</label><h2>Minha Missão</h2><p>Criar interfaces que não apenas pareçam bonitas, mas que resolvam problemas reais de negócio.</p><br><button class="btn-main">Download CV</button></div></div>
-    <div class="modal modal-2"><div class="modal-content"><label for="m2" class="close-modal">✕</label><h2>Tech Stack</h2><p>Domínio avançado em React, TypeScript e Figma para prototipagem de alta fidelidade.</p></div></div>
-    <div class="modal modal-3"><div class="modal-content"><label for="m3" class="close-modal">✕</label><h2>Filtros</h2><p>Navegue por categorias: E-commerce, Dashboards, Apps Mobile e Branding.</p></div></div>
-    <div class="modal modal-4"><div class="modal-content"><label for="m4" class="close-modal">✕</label><h2>Experiência</h2><p>Detalhes sobre passagens por agências e atuação como freelancer internacional.</p></div></div>
-    <div class="modal modal-5"><div class="modal-content"><label for="m5" class="close-modal">✕</label><h2>Contrate-me</h2><p>Formulário de briefing detalhado para novos projetos.</p></div></div>
-    <div class="modal modal-6"><div class="modal-content"><label for="m6" class="close-modal">✕</label><h2>Case Study</h2><p>Análise completa de métricas, wireframes e resultado final do projeto Destaque.</p></div></div>
-    <div class="modal modal-7"><div class="modal-content"><label for="m7" class="close-modal">✕</label><h2>Links Úteis</h2><p>Acesse meu repositório de componentes e artigos no Medium.</p></div></div>
-    <div class="modal modal-8"><div class="modal-content"><label for="m8" class="close-modal">✕</label><h2>Redes Sociais</h2><p>Conecte-se para networking e parcerias estratégicas.</p></div></div>
+    <div class="modal modal-1"><div class="modal-content"><label for="m1" class="close-modal">✕</label><div class="tag">Sobre Mim</div><h1>Experiência e Visão</h1><hr style="margin:20px 0"><p>Texto detalhado sobre sua carreira aqui...</p></div></div>
+    <div class="modal modal-2"><div class="modal-content"><label for="m2" class="close-modal">✕</label><h1>Habilidades Técnicas</h1><p>Lista completa de stacks...</p></div></div>
+    <div class="modal modal-3"><div class="modal-content"><label for="m3" class="close-modal">✕</label><h1>Categorias de Projetos</h1><p>Filtros avançados aqui...</p></div></div>
+    <div class="modal modal-4"><div class="modal-content"><label for="m4" class="close-modal">✕</label><h1>Jornada Profissional</h1><p>Linha do tempo detalhada...</p></div></div>
+    <div class="modal modal-5"><div class="modal-content"><label for="m5" class="close-modal">✕</label><h1>Inicie um Projeto</h1><p>Formulário de contato aqui...</p></div></div>
+    <div class="modal modal-6"><div class="modal-content"><label for="m6" class="close-modal">✕</label><h1>Case Study Completo</h1><p>Imagens, processos e resultados...</p></div></div>
+    <div class="modal modal-7"><div class="modal-content"><label for="m7" class="close-modal">✕</label><h1>Documentos e CV</h1><p>Links para download...</p></div></div>
+    <div class="modal modal-8"><div class="modal-content"><label for="m8" class="close-modal">✕</label><h1>Social Media</h1><p>Feed ou links diretos...</p></div></div>
 
     <div class="main-container">
-        <header><strong>PORTFÓLIO v2.0</strong> <span>2026</span></header>
+        <header><strong>MASTER PORTFOLIO</strong> <div class="circle" style="width:30px; height:30px;">UI</div></header>
 
         <main class="main-grid">
             <section class="ui-card hero">
-                <div class="tag">01. Perfil</div>
-                <h3>Design & Desenvolvimento Estratégico</h3>
-                <label for="m1" class="btn-open">VER BIO COMPLETA</label>
+                <div class="tag">01. Hero</div>
+                <h2>Construindo o futuro digital através do design estratégico.</h2>
+                <label for="m1" class="btn-open">Expandir Introdução</label>
             </section>
 
             <section class="ui-card stories">
                 <div class="circle">JS</div><div class="circle">FIG</div>
-                <label for="m2" class="btn-open">STACK</label>
+                <label for="m2" class="btn-open">Skills</label>
             </section>
 
             <div class="ui-card select">
-                <div class="tag">Filtro</div>
-                <strong>WEB / APP</strong>
-                <label for="m3" class="btn-open">CATEGORIAS</label>
+                <div class="tag">03. Navegação</div>
+                <strong>PROJETOS</strong>
+                <label for="m3" class="btn-open">Filtrar</label>
             </div>
 
             <div class="ui-card list">
-                <div class="tag">Timeline</div>
-                <strong>Experiência</strong>
-                <label for="m4" class="btn-open">DETALHES</label>
+                <div class="tag">04. Timeline</div>
+                <strong>Carreira Profissional</strong>
+                <label for="m4" class="btn-open">Ver Histórico</label>
             </div>
 
             <div class="ui-card form">
-                <div class="tag">Briefing</div>
-                <div class="btn-main" style="font-size: 10px;">ENVIAR EMAIL</div>
-                <label for="m5" class="btn-open">ORÇAMENTO</label>
+                <div class="tag">05. Conversão</div>
+                <strong>Vamos trabalhar juntos?</strong>
+                <label for="m5" class="btn-open">Abrir Briefing</label>
             </div>
 
             <article class="ui-card article">
-                <div class="tag">Destaque</div>
+                <div class="tag">06. Showcase</div>
                 <div class="box"></div>
-                <strong>PROJETO MASTER</strong>
-                <label for="m6" class="btn-open">VER CASE STUDY</label>
+                <strong>PROJETO EM DESTAQUE</strong>
+                <label for="m6" class="btn-open">Analisar Case</label>
             </article>
 
             <div class="ui-card actions">
                 <div class="circle">CV</div>
-                <label for="m7" class="btn-open">RECURSOS</label>
+                <label for="m7" class="btn-open">Baixar CV</label>
             </div>
 
             <div class="ui-card social">
-                <strong>@SOCIAL</strong>
-                <label for="m8" class="btn-open">CONECTAR</label>
+                <div class="tag">08. Network</div>
+                <strong>REDES SOCIAIS</strong>
+                <label for="m8" class="btn-open">Conectar</label>
             </div>
         </main>
 
-        <footer><small>© MASTER UI</small> <small>2026</small></footer>
+        <footer><small>© 2026 DESIGNER ESTRATÉGICO</small> <small>PROJETADO PARA ALTA CONVERSÃO</small></footer>
     </div>
 
 </body>
