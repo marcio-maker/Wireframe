@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PortalNews - Wireframe Full 10 Itens</title>
+    <style>
+        /* RESET E CONFIGURAÇÕES BASE */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        
+        body { 
+            background: #ffffff; 
+            color: #000; 
+            padding: 15px;
+            min-height: 100vh;
+        }
+
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        /* ESTILO DOS COMPONENTES (BORDAS ARREDONDADAS) */
+        .ui-card, header, footer, .comp-item {
+            border: 2px solid #000;
+            border-radius: 24px;
+            padding: 20px;
+            background: #fff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        /* GRID PRINCIPAL */
+        .main-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 15px;
+        }
+
+        /* POSICIONAMENTO ESPECÍFICO */
+        header { grid-column: span 12; flex-direction: row; justify-content: space-between; align-items: center; height: 70px; }
+        .hero { grid-column: span 8; min-height: 250px; }
+        .stories { grid-column: span 4; flex-direction: row; gap: 10px; align-items: center; overflow: hidden; }
+        .select { grid-column: span 3; text-align: center; }
+        .list { grid-column: span 5; }
+        .form { grid-column: span 4; }
+        .article { grid-column: span 6; }
+        .actions { grid-column: span 3; flex-direction: row; gap: 10px; }
+        .social { grid-column: span 3; text-align: center; font-size: 10px; font-weight: bold; }
+        footer { grid-column: span 12; flex-direction: row; justify-content: space-between; align-items: center; }
+
+        @media (max-width: 900px) {
+            .hero, .stories, .select, .list, .form, .article, .actions, .social { grid-column: span 12; }
+            .main-grid { display: flex; flex-direction: column; }
+        }
+
+        /* BOTÃO TRIGGER (LABEL) */
+        .btn-trigger {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 10px 20px;
+            border: 2px solid #000;
+            background: #000;
+            color: #fff;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        /* LÓGICA DO MODAL (NO-JS) */
+        .modal-state { display: none; }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: #fff;
+            z-index: 9999;
+            display: none;
+            padding: 50px;
+            overflow-y: auto;
+        }
+
+        .modal-state:checked + .modal-overlay {
+            display: block;
+        }
+
+        .btn-close {
+            position: fixed;
+            top: 25px; right: 25px;
+            background: #000;
+            color: #fff;
+            padding: 12px 25px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            border: 2px solid #000;
+        }
+
+        /* ELEMENTOS VISUAIS */
+        .circle { width: 45px; height: 45px; border: 2px solid #000; border-radius: 50%; }
+        .line { height: 8px; background: #eee; border-radius: 10px; width: 100%; margin: 5px 0; border: 1px solid #000; }
+        .box { border: 2px dashed #000; border-radius: 15px; height: 60px; margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+
+    <div class="main-container">
+        
+        <header>
+            <strong>PORTAL NEWS</strong>
+            <label for="m1" class="btn-trigger">INFO</label>
+            <input type="checkbox" id="m1" class="modal-state">
+            <div class="modal-overlay">
+                <label for="m1" class="btn-close">FECHAR [X]</label>
+                <h2>01. HEADER</h2>
+                <hr style="margin: 20px 0;">
+                <p>Configurações de navegação e identidade visual.</p>
+            </div>
+        </header>
+
+        <main class="main-grid">
+            
+            <section class="ui-card hero">
+                <div class="box"></div>
+                <h3>DESTAQUE PRINCIPAL</h3>
+                <label for="m2" class="btn-trigger">VER MAIS</label>
+                <input type="checkbox" id="m2" class="modal-state">
+                <div class="modal-overlay">
+                    <label for="m2" class="btn-close">FECHAR [X]</label>
+                    <h2>02. HERO COMPONENT</h2>
+                    <p>Conteúdo detalhado do banner de destaque.</p>
+                </div>
+            </section>
+
+            <section class="ui-card stories">
+                <div class="circle"></div><div class="circle"></div>
+                <label for="m3" class="btn-trigger">STORIES</label>
+                <input type="checkbox" id="m3" class="modal-state">
+                <div class="modal-overlay">
+                    <label for="m3" class="btn-close">FECHAR [X]</label>
+                    <h2>03. STORIES</h2>
+                    <p>Visualização de atualizações rápidas.</p>
+                </div>
+            </section>
+
+            <div class="ui-card select">
+                <strong>FILTROS</strong>
+                <label for="m4" class="btn-trigger">ABRIR</label>
+                <input type="checkbox" id="m4" class="modal-state">
+                <div class="modal-overlay">
+                    <label for="m4" class="btn-close">FECHAR [X]</label>
+                    <h2>04. FILTROS</h2>
+                    <p>Parâmetros de busca e organização.</p>
+                </div>
+            </div>
+
+            <div class="ui-card list">
+                <div class="line"></div><div class="line" style="width:60%"></div>
+                <label for="m5" class="btn-trigger">LISTA</label>
+                <input type="checkbox" id="m5" class="modal-state">
+                <div class="modal-overlay">
+                    <label for="m5" class="btn-close">FECHAR [X]</label>
+                    <h2>05. LISTAGEM</h2>
+                    <p>Exibição de dados em formato de lista.</p>
+                </div>
+            </div>
+
+            <div class="ui-card form">
+                <div style="border: 1px solid #000; padding: 5px; border-radius: 8px;">E-MAIL...</div>
+                <label for="m6" class="btn-trigger">OK</label>
+                <input type="checkbox" id="m6" class="modal-state">
+                <div class="modal-overlay">
+                    <label for="m6" class="btn-close">FECHAR [X]</label>
+                    <h2>06. FORMULÁRIO</h2>
+                    <p>Campos de entrada e captura de leads.</p>
+                </div>
+            </div>
+
+            <article class="ui-card article">
+                <div class="box"></div>
+                <strong>DESTAQUE</strong>
+                <label for="m7" class="btn-trigger">LER</label>
+                <input type="checkbox" id="m7" class="modal-state">
+                <div class="modal-overlay">
+                    <label for="m7" class="btn-close">FECHAR [X]</label>
+                    <h2>07. ARTIGO</h2>
+                    <p>Conteúdo textual completo do blog.</p>
+                </div>
+            </article>
+
+            <div class="ui-card actions">
+                <div class="circle"></div><div class="circle"></div>
+                <label for="m8" class="btn-trigger">AÇÕES</label>
+                <input type="checkbox" id="m8" class="modal-state">
+                <div class="modal-overlay">
+                    <label for="m8" class="btn-close">FECHAR [X]</label>
+                    <h2>08. AÇÕES</h2>
+                    <p>Botões de interação e navegação.</p>
+                </div>
+            </div>
+
+            <div class="ui-card social">
+                <span>IG • BE • LI</span>
+                <label for="m9" class="btn-trigger">+</label>
+                <input type="checkbox" id="m9" class="modal-state">
+                <div class="modal-overlay">
+                    <label for="m9" class="btn-close">FECHAR [X]</label>
+                    <h2>09. SOCIAL</h2>
+                    <p>Links para redes sociais e portfólios.</p>
+                </div>
+            </div>
+
+        </main>
+
+        <footer>
+            <small>© 2024 MASTER UI</small>
+            <label for="m10" class="btn-trigger">TERMOS</label>
+            <input type="checkbox" id="m10" class="modal-state">
+            <div class="modal-overlay">
+                <label for="m10" class="btn-close">FECHAR [X]</label>
+                <h2>10. RODAPÉ</h2>
+                <p>Informações legais e direitos autorais.</p>
+            </div>
+        </footer>
+
+    </div>
+
+</body>
+</html>
